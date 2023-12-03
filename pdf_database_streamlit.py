@@ -62,7 +62,7 @@ def run_search():
 
     dfOut['Count'] = dfOut['Count'].astype('int')
     cols = ['Product Category','Product Description','Filename','Page Title','Page Description','Page Description 2','Page Number']
-    df3 = dfOut.groupby('Product').sum().drop(columns = cols)
+    df3 = dfOut.groupby('Product Name').sum().drop(columns = cols)
     df4 = dfOut.groupby('Filename').sum().drop(columns = 'Page Number')
     
     #dfLine = pd.DataFrame(columns = cols)
