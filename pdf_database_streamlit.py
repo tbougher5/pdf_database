@@ -61,9 +61,9 @@ def run_search():
         dfOut = dfPrd.loc[(dfPrd['Text'].str.contains(txtStr,case=False, na=False, regex=True)) & (dfPrd['Product Category'] == prdCat)]
 
     dfOut['Count'] = dfOut['Count'].astype('int')
-    cols = ['Product Category','Product Description','Filename','Page Title','Page Description','Page Description 2','Page Number']
+    cols = ['Product Category','Document Type','Status','Document Info #1','Document Info #2','Filename','Page Info #1','Page Info #2','Page #','Text','Filepath']
     df3 = dfOut.groupby('Product Name').sum().drop(columns = cols)
-    df4 = dfOut.groupby('Filename').sum().drop(columns = 'Page Number')
+    df4 = dfOut.groupby('Filename').sum().drop(columns = 'Page #')
     
     #dfLine = pd.DataFrame(columns = cols)
     #dfOut.to_csv(fOut)
