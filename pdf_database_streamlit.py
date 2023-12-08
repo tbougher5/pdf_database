@@ -1,6 +1,6 @@
 import pandas as pd
 import streamlit as st
-import pickle
+#import pickle
 
 prdDFlist = [['All Products','DF_All_Products_v6B.sav'], ['Architectural Windows', 'DF_Architectural_Windows_v4.sav'], ['Curtain Wall', 'DF_Curtain_Wall_v4.sav']\
              ,['Entrances','DF_Entrances_v4.sav'],['Storefront','DF_Storefront_v4.sav'],['Window Wall','DF_Window_Wall_v4.sav'],['Sun Controls', 'DF_Sun_Controls_v4.sav']]
@@ -10,6 +10,8 @@ prdNum = 2
 
 bolList = []
 dtlList = []
+
+dfFile = 'DF_All_Products_v6B.sav'
 
 def convert_df(df):
     
@@ -38,7 +40,6 @@ def run_search():
     #    if prdCat in prdDFlist[i][0]:
     #        dfFile = prdDFlist[i][1]
     #        break'
-    dfFile = 'DF_All_Products_v6B.sav'
 
     #cols = ['Product Name','Full Name','Secondary Heading','Filename','Detail Heading 1','Detail Heading 2','Page Number','Search String']
     #workbook = xlsxwriter.Workbook(fOut)
@@ -54,16 +55,28 @@ def run_search():
     #print(prd)
     if prdCat == 'All Products':
       if st.session_state.hypStr == True:
-        dfOut = dfPrd.loc[(dfPrd['Text'].str.contains('|'.join([txtStr, txtStr2, txtStr3]),case=False, na=False, regex=True))]
+        dfOut1 = dfPrd.loc[(dfPrd['Text'].str.contains('|'.join([txtStr, txtStr2, txtStr3]),case=False, na=False, regex=True))]
       else:
-        dfOut = dfPrd.loc[(dfPrd['Text'].str.contains(txtStr,case=False, na=False, regex=True))]
+        dfOut1 = dfPrd.loc[(dfPrd['Text'].str.contains(txtStr,case=False, na=False, regex=True))]
     else:
-        dfOut = dfPrd.loc[(dfPrd['Text'].str.contains(txtStr,case=False, na=False, regex=True)) & (dfPrd['Product Category'] == prdCat)]
+        dfOut1 = dfPrd.loc[(dfPrd['Text'].str.contains(txtStr,case=False, na=False, regex=True)) & (dfPrd['Product Category'] == prdCat)]
+
+    if st.session_state.actPrd == True:
+      dfOut2 = dfOut1.loc[(dfPrd['Status'] == 'Active')]
+    else:
+      dfOut2 = dfOut1
+    if not docList:
+      dfOut = dfOut2
+    else:
+      dfOut = dfOut2[dfOut2['Document Type'].isin(docList)]
 
     dfOut['Count'] = dfOut['Count'].astype('int')
-    cols = ['Product Category','Document Type','Status','Document Info #1','Document Info #2','Filename','Page Info #1','Page Info #2','Page #','Text','Filepath']
-    df3 = dfOut.groupby('Product Name').sum().drop(columns = cols)
-    df4 = dfOut.groupby('Filename').sum().drop(columns = 'Page #')
+    print(list(dfOut.columns.values))
+    cols1 = ['Product Category','Document Type','Status','Document Info #1','Document Info #2','Filename','Page Info #1','Page Info #2','Page #','Text','Filepath']
+    cols2 = ['Product Name','Product Category','Document Type','Status','Document Info #1','Document Info #2','Page Info #1','Page Info #2','Page #','Text','Filepath']
+    #cols = ['Product Category','Product Description','Filename','Page Title','Page Description','Page Description 2','Page Number']
+    df3 = dfOut.groupby('Product Name').sum().drop(columns = cols1)
+    df4 = dfOut.groupby('Filename').sum().drop(columns = cols2)
     
     #dfLine = pd.DataFrame(columns = cols)
     #dfOut.to_csv(fOut)
@@ -80,9 +93,15 @@ def run_search():
         col1.dataframe(df3)
         col1.header('Number of results by file')
         col1.dataframe(df4)
-        col1.text(txtStr)
 # closing the pdf file object
 
+def list_files():
+  dfP = pd.read_pickle(dfFile)
+  dfOut = dfP['Filename'].drop_duplicates()
+  #dfOut = dfOut.sort_values
+  with st.container():
+    col1edge, col1, col2edge = st.columns((1, 12, 1))
+    col1.dataframe(dfOut)
 # filePath is a string that contains the path to the pdf
 ct = 0
 
@@ -92,8 +111,8 @@ with st.container():
     col1edge, col1, col2edge = st.columns((1, 12, 1))
     col1.title('Web Details Parts Search')
     col1.caption('')
-    col1.caption('Contains web details, installation manuals, and Florida Product Approvals')
-    col1.caption('Last Updated: 12/3/23')
+    col1.caption('Contains web details, installation manuals, structural charts, and Florida Product Approvals')
+    col1.caption('Last Updated: 12/7/23')
     col1.caption('')
 
 with st.container():
@@ -105,11 +124,27 @@ with st.container():
     col1.text('')
     col2.text('')
     col3.text('')
-    col1.checkbox('Exact part only (e.g., GP-100 but not GP-1001)', key='exStr', value=True)
-    col2.checkbox('Include results without hyphen or space', key='hypStr', value=False)
+    
     col1.text('')
-    col1.button(label='Calculate', key ='calc')
+    col2.text('')
+    col3.text('')
+    col1.checkbox('Active products only',key='actPrd', value=True)
+    col2.checkbox('Exact part only (e.g., GP-100 but not GP-1001)', key='exStr', value=True)
+    col3.checkbox('Include results without hyphen or space', key='hypStr', value=False)
+    
     #col1.button_calc = st.button(label='Calculate', key ='calc')
+    with st.container():
+    #col1, col2 = st.columns(2)
+      col1edge, col1, col2edge = st.columns((1, 9, 1))
+      docList = col1.multiselect('Types of documents to search:',['Web Details','Installation Manuals','Florida Product Approvals', 'Sell Sheet', 'Specifications', 'Structural Charts'],[])
+      col1.text('')
+      col1.button(label='Search', key ='calc')
+      col1.text('')
+      col1.button(label='List Included Files', key ='fileList')
+
 
 if st.session_state.calc:
     run_search()
+
+if st.session_state.fileList:
+    list_files()
