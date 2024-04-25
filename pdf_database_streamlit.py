@@ -4,14 +4,14 @@ import streamlit as st
 
 prdDFlist = [['All Products','DF_All_Products_v6B.sav'], ['Architectural Windows', 'DF_Architectural_Windows_v4.sav'], ['Curtain Wall', 'DF_Curtain_Wall_v4.sav']\
              ,['Entrances','DF_Entrances_v4.sav'],['Storefront','DF_Storefront_v4.sav'],['Window Wall','DF_Window_Wall_v4.sav'],['Sun Controls', 'DF_Sun_Controls_v4.sav']]
-prdCat = ['All Products', 'Architectural Windows','Canada Products', 'Curtain Wall','Entrances','Storefront','Window Wall','Sun Controls']
+prdCat = ['All Products', 'Architectural Windows','Canadian Products', 'Curtain Wall','Entrances','Storefront','Window Wall','Sun Controls']
 prd = 'Curtain Wall'
 prdNum = 2
 
 bolList = []
 dtlList = []
 
-dfFile = 'DF_All_Products_V11.sav'
+dfFile = 'DF_All_Products_4-25-2024.sav'
 
 def convert_df(df):
     
