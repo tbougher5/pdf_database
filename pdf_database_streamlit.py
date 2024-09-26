@@ -112,7 +112,7 @@ with st.container():
     col1.title('Web Details Parts Search')
     col1.caption('')
     col1.caption('Contains web details, installation manuals, structural charts, and Florida Product Approvals')
-    col1.caption('Last Updated: 1/9/24')
+    col1.caption('Last Updated: 9/26/24')
     col1.caption('')
 
 with st.container():
