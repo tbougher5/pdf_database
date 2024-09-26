@@ -11,9 +11,9 @@ tic = time.perf_counter()
 
 #====================================
 #------Typical Items to Edit---------
-pdfDir = "E:\STREAMLIT"
+pdfDir = 'C:\\Users\\bough\\OneDrive\\Desktop\\STREAMLIT\\update\Active'
 prd1 = 'All Parts'
-fName = 'DF_All_Products_Test'
+fName = 'DF_All_Products_04/25/2024'
 #---write a pickle (.sav) file in addition to xlsx
 wrtPkl = True
 #======================================
