@@ -4,14 +4,14 @@ import streamlit as st
 
 prdDFlist = [['All Products','DF_All_Products_v6B.sav'], ['Architectural Windows', 'DF_Architectural_Windows_v4.sav'], ['Curtain Wall', 'DF_Curtain_Wall_v4.sav']\
              ,['Entrances','DF_Entrances_v4.sav'],['Storefront','DF_Storefront_v4.sav'],['Window Wall','DF_Window_Wall_v4.sav'],['Sun Controls', 'DF_Sun_Controls_v4.sav']]
-prdCat = ['All Products', 'Architectural Windows','Canada Products', 'Curtain Wall','Entrances','Storefront','Window Wall','Sun Controls']
+prdCat = ['All Products', 'Architectural Windows','Canadian Products','Coral', 'Curtain Wall','Entrances','Storefront','Window Wall','Sun Controls']
 prd = 'Curtain Wall'
 prdNum = 2
 
 bolList = []
 dtlList = []
 
-dfFile = 'DF_All_Products_4-25-2024.sav'
+dfFile = 'DF_All_Products_9-26-2024.sav'
 
 def convert_df(df):
     
@@ -112,7 +112,7 @@ with st.container():
     col1.title('Web Details Parts Search')
     col1.caption('')
     col1.caption('Contains web details, installation manuals, structural charts, and Florida Product Approvals')
-    col1.caption('Last Updated: 1/9/24')
+    col1.caption('Last Updated: 9/26/24')
     col1.caption('')
 
 with st.container():
